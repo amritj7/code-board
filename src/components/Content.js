@@ -1,4 +1,4 @@
-var Content = `#include <iostream>
+var content = `#include <iostream>
 #include <queue> 
 #include <vector>
 using PII = std::pair<int, int>;
@@ -89,5 +89,6 @@ int main(int argc, char **argv) {
 test1(); test2(); test3();
 return 0;
 `;
-var newcode = Content.split("\n");
+
+var newcode = content.split("\n");
 export default newcode;

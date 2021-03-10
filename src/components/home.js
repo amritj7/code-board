@@ -2,7 +2,6 @@ import React from "react";
 import Content from "./Content.js";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import Header from "./header.js";
-import backgroundimg from "./background.jpg";
 class ImportCode extends React.Component {
   constructor(props) {
     super(props);
@@ -46,15 +45,25 @@ class ImportCode extends React.Component {
         onChange={(e) => {
           if (this.state.formVisible) {
             var userString = e.target.value;
+            this.setState({
+              highlightChar: Math.min(
+                userString.length - 1,
+                this.state.highlightChar
+              ),
+            });
 
             if (
               userString[userString.length - 1] ===
-              Content[this.state.currentIndex][userString.length - 1]
+                Content[this.state.currentIndex][userString.length - 1] &&
+              this.state.highlightChar == userString.length - 2
             ) {
               this.setState({
                 currentValue: e.target.value,
-                correctChar: this.state.correctChar + 1,
-                highlightChar: userString.length - 1,
+                highlightChar: this.state.highlightChar + 1,
+              });
+            } else {
+              this.setState({
+                currentValue: e.target.value,
               });
             }
           }
@@ -68,6 +77,8 @@ class ImportCode extends React.Component {
           ) {
             this.setState({
               currentValue: "",
+              correctChar:
+                this.state.correctChar + this.state.highlightChar + 1,
               highlightChar: -1,
             });
             this.handleLine();
@@ -105,6 +116,10 @@ class ImportCode extends React.Component {
     this.state.currentTimer = setTimeout(() => {
       this.setState({
         formVisible: false,
+        correctChar: Math.max(
+          this.state.correctChar + this.state.highlightChar,
+          0
+        ),
         isPlaying: false,
       });
     }, 30000);
